@@ -1,0 +1,556 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For You</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(
+        180deg,
+        #d9f3ff 0%,
+        #8fd3ff 35%,
+        #4fa8e8 70%,
+        #1d6fb8 100%
+    );
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+}
+
+/* HALAMAN */
+
+.page {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 25px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .5s, transform .5s;
+}
+
+.page.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* JUDUL */
+
+.title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: white;
+    margin-bottom: 15px;
+    text-shadow:
+        0 0 10px rgba(255,255,255,.4),
+        0 0 20px rgba(255,255,255,.2);
+}
+
+/* TEKS */
+
+.text {
+    max-width: 350px;
+    line-height: 1.8;
+    font-size: 1rem;
+    color: white;
+}
+
+/* GAMBAR */
+
+.img-box img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 20px;
+    padding: 8px;
+    background: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,.2);
+    margin-bottom: 20px;
+}
+
+/* TOMBOL */
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+button {
+    border: none;
+    padding: 14px 35px;
+    border-radius: 15px;
+    background: #0e7cc7;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 8px 20px rgba(14,124,199,.35);
+}
+
+button:hover {
+    background: #0964a3;
+}
+
+button:active {
+    transform: scale(.95);
+}
+
+/* SURAT */
+
+.letter {
+    width: 95%;
+    max-width: 380px;
+    background: rgba(255,255,255,.15);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.2);
+    padding: 25px;
+    border-radius: 20px;
+    text-align: left;
+    line-height: 1.9;
+    color: white;
+    box-shadow: 0 15px 30px rgba(0,0,0,.15);
+}
+
+/* PAGE 4: SURAT PANJANG DAN BISA DI-SCROLL */
+
+#page4.active {
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    padding: 20px 12px 35px;
+    text-align: left;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    scroll-behavior: smooth;
+}
+
+#page4 .letter {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin: 0 auto;
+    padding: 25px 20px;
+    overflow: visible;
+}
+
+.letter-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.letter-content {
+    font-size: 15px;
+    line-height: 1.9;
+    text-align: left;
+    overflow-wrap: anywhere;
+}
+
+.letter-ending {
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.9;
+    padding: 10px 0 15px;
+}
+
+.page4-actions {
+    display: flex;
+    justify-content: center;
+    padding: 18px 0 5px;
+}
+
+#page4::-webkit-scrollbar {
+    width: 5px;
+}
+
+#page4::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.5);
+    border-radius: 10px;
+}
+
+#page4::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* EMOJI LAUT */
+
+.ocean {
+    position: fixed;
+    bottom: -100px;
+    opacity: .35;
+    pointer-events: none;
+    animation: floatOcean linear infinite;
+    z-index: 1;
+}
+
+@keyframes floatOcean {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(-120vh);
+    }
+}
+
+/* GELOMBANG */
+
+.wave {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 120px;
+    background: rgba(255,255,255,.15);
+    border-radius: 45%;
+    animation: waveMove 12s linear infinite;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.wave2 {
+    height: 90px;
+    opacity: .5;
+    animation-duration: 18s;
+}
+
+@keyframes waveMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* RESPONSIVE HP */
+
+@media (max-width: 480px) {
+    .page:not(#page4) {
+        padding: 20px;
+    }
+
+    .title {
+        font-size: 2.6rem;
+    }
+
+    .text {
+        font-size: .95rem;
+    }
+
+    .img-box img {
+        width: 150px;
+        height: 150px;
+    }
+
+    button {
+        font-size: 16px;
+        padding: 12px 30px;
+    }
+
+    #page4.active {
+        padding: 15px 10px 28px;
+    }
+
+    #page4 .letter {
+        padding: 20px 16px;
+    }
+
+    .letter-title {
+        font-size: 20px;
+    }
+
+    .letter-content {
+        font-size: 14px;
+        line-height: 1.85;
+    }
+
+    .letter-ending {
+        font-size: 14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIK -->
+
+<audio id="bgm" autoplay loop muted>
+    <source src="musik.mp3" type="audio/mpeg">
+</audio>
+
+<!-- PAGE 1 -->
+
+<div class="page active" id="page1">
+
+    <div class="img-box">
+        <img src="icon1.gif" alt="Cute animation">
+    </div>
+
+    <button onclick="showPage('page2')">
+        tap &gt;
+    </button>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div class="page" id="page2">
+
+    <div class="img-box">
+        <img src="icon1.jpg" alt="Picture">
+    </div>
+
+    <h1 class="title">I'm sorry, love</h1>
+
+    <p class="text">
+        Sometimes we hurt the people we love the most.
+        This page is a small way to say, I'm sorry.
+    </p>
+
+    <div class="btn-group">
+
+        <button onclick="showPage('page3')">
+            Yes
+        </button>
+
+        <button id="noBtn" type="button">
+            No
+        </button>
+
+    </div>
+
+</div>
+
+<!-- PAGE 3 -->
+
+<div class="page" id="page3">
+
+    <div class="img-box">
+        <img src="icon2.jpg" alt="Picture">
+    </div>
+
+    <p class="text">
+        I know I made mistakes.
+        I'm not perfect.
+        But my feelings for you are real.
+    </p>
+
+    <button onclick="showPage('page4')">
+        forgive me!!
+    </button>
+
+</div>
+
+<!-- PAGE 4 -->
+
+<div class="page" id="page4">
+
+    <div class="letter">
+
+        <div class="letter-title">
+            For You, Boy 🤍
+        </div>
+
+        <div class="letter-content">
+
+            boy, please. maaf ya kalau selama ini aku sering bikin kamu bingung sama sikap aku, maaf kalau caraku menyayangi kamu justru bikin kamu kepikiran atau merasa aku sedang berusaha menjauh dari kamu. jujur, aku tulus banget sama kamu. aku ga pernah datang ke hidup kamu cuma buat main-main, ga pernah berniat menjadikan kamu tempat singgah sementara, apalagi mempermainkan perasaan kamu.
+
+            <br><br>
+
+            aku menyayangi kamu dengan perasaan yang benar-benar aku punya, dengan segala ketulusan yang mungkin ga selalu bisa aku tunjukkan lewat sikap atau kata-kata. kalau terkadang aku terlihat seperti ingin melepaskan kamu, itu bukan karena perasaan aku berubah. aku cuma terlalu takut kalau keadaan aku nantinya malah menyulitkan kamu, terlalu takut kalau orang yang aku sayang justru ikut terluka karena keadaan yang bahkan ga bisa aku kendalikan sepenuhnya.
+
+            <br><br>
+
+            maaf kalau aku terlalu banyak memikirkan kemungkinan buruk sampai tanpa sadar aku malah membuat kamu ikut sedih. aku ga pernah ingin kamu merasa kalau semua yang kita jalani selama ini ga berarti buat aku. kamu berarti, sayang. perasaan kamu berarti, kehadiran kamu berarti, dan semua hal kecil yang kamu lakukan buat aku juga berarti.
+
+            <br><br>
+
+            aku ga bisa menjanjikan kalau semuanya akan selalu mudah, tapi aku mau kamu tahu kalau perasaan aku ke kamu bukan sesuatu yang aku ucapkan tanpa kesungguhan. aku benar-benar menyayangi kamu, dan kalau selama ini ada sikap aku yang membuat kamu meragukan ketulusan itu, aku minta maaf. aku cuma berharap kamu ga pernah merasa kalau kamu salah karena sudah menyayangi aku.
+
+            <br><br>
+
+            kamu ga salah, sayang. justru aku bersyukur karena di antara banyak hal yang terjadi dalam hidup aku, aku pernah dipertemukan sama seseorang yang begitu berarti seperti kamu. maaf ya, kalau aku belum bisa membuat semuanya terasa mudah buat kita..
+
+            <br><br>
+
+            intinya aku ga pernah menyesal sudah memilih kamu, sayang. kalau ada satu hal yang ingin aku pastikan, itu adalah ketulusan aku ke kamu. aku mungkin ga selalu pandai menunjukkan rasa sayang, tapi percayalah, perasaan aku ga pernah main-main.
+
+            <br><br>
+
+            maaf kalau keadaan aku membuat semuanya jadi rumit. kamu ga pernah jadi kesalahan dalam hidup aku, justru kamu salah satu hal paling tulus yang pernah aku punya.
+
+            <br><br>
+
+            <div class="letter-ending">
+                i love you sayang, always. 🤍
+                <br>
+                aku akan selalu mencintaimu.
+            </div>
+
+        </div>
+
+        <div class="page4-actions">
+            <button onclick="showPage('page5')">
+                Continue
+            </button>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- PAGE 5 -->
+
+<div class="page" id="page5">
+
+    <div class="img-box">
+        <img src="icon4.gif" alt="Cute animation">
+    </div>
+
+    <p class="text">
+        Thank you for reading my apology.
+        <br>
+        Thank you for every smile.
+    </p>
+
+    <br>
+
+    <button onclick="showPage('page1')">
+        replay
+    </button>
+
+</div>
+
+<!-- GELOMBANG -->
+
+<div class="wave"></div>
+<div class="wave wave2"></div>
+
+<script>
+
+/* GANTI HALAMAN */
+
+function showPage(id) {
+
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+
+    const nextPage = document.getElementById(id);
+
+    if (!nextPage) return;
+
+    nextPage.classList.add('active');
+
+    /* Kembali ke bagian paling atas setiap Page 4 dibuka */
+    if (id === 'page4') {
+        nextPage.scrollTop = 0;
+    }
+
+}
+
+/* TOMBOL NO KABUR */
+
+const noBtn = document.getElementById("noBtn");
+
+function moveButton() {
+
+    const x = (Math.random() * 220) - 110;
+    const y = (Math.random() * 140) - 70;
+
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+}
+
+noBtn.addEventListener("mouseover", moveButton);
+noBtn.addEventListener("touchstart", moveButton);
+
+/* MUSIK */
+
+const music = document.getElementById("bgm");
+
+async function startMusic() {
+
+    try {
+        music.muted = false;
+        await music.play();
+    } catch (error) {
+        console.log("Musik menunggu interaksi pengguna.");
+    }
+
+}
+
+document.addEventListener("click", startMusic, { once: true });
+document.addEventListener("touchstart", startMusic, { once: true });
+
+/* EMOJI LAUT */
+
+const icons = [
+    "🌊",
+    "🐳",
+    "🐬",
+    "🐠",
+    "🐟",
+    "🐙",
+    "🪼",
+    "🐚",
+    "⭐",
+    "🫧"
+];
+
+for (let i = 0; i < 40; i++) {
+
+    const span = document.createElement("span");
+
+    span.className = "ocean";
+    span.textContent = icons[
+        Math.floor(Math.random() * icons.length)
+    ];
+
+    span.style.left = Math.random() * 100 + "vw";
+    span.style.fontSize = (20 + Math.random() * 20) + "px";
+    span.style.animationDuration = (8 + Math.random() * 10) + "s";
+    span.style.animationDelay = Math.random() * 5 + "s";
+
+    document.body.appendChild(span);
+
+}
+
+</script>
+
+</body>
+</html>
